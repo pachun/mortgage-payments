@@ -1,9 +1,6 @@
 import React from "react"
 import monthlyPayment from "./monthlyPayment"
 
-// const numberToPercentage = (num: number): string => (num * 100).toFixed(3)
-// const percentageToNumber = (percentage: number): number => percentage / 100
-
 const App = () => {
   const [amount, setAmount] = React.useState(265_240)
   const [interestRate, setInterestRate] = React.useState(0.05)
@@ -22,32 +19,45 @@ const App = () => {
   ).toFixed(2)
 
   return (
-    <div>
-      <form>
-        <label>Amount</label>
-        <input
-          type="number"
-          min={0}
-          value={displayedAmount}
-          onChange={e => setAmount(Number(e.target.value))}
-        />
-        <label>Interest Rate</label>
-        <input
-          type="number"
-          min={0}
-          step={0.0001}
-          value={displayedInterestRate}
-          onChange={e => setInterestRate(Number(e.target.value))}
-        />
-        <label>Term</label>
-        <input
-          type="number"
-          min={1}
-          value={displayedTerm}
-          onChange={e => setTerm(Number(e.target.value))}
-        />
-      </form>
-      <h1>Monthly Payment: ${displayedMonthlyLoanPayment}</h1>
+    <div style={{ display: "flex", justifyContent: "center", marginTop: 100 }}>
+      <div style={{ width: 500 }}>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <h4>Amortized Loan Calculator</h4>
+        </div>
+        <form>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <label>Amount</label>
+            <input
+              type="number"
+              min={0}
+              value={displayedAmount}
+              onChange={e => setAmount(Number(e.target.value))}
+            />
+          </div>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <label>Interest Rate</label>
+            <input
+              type="number"
+              min={0}
+              step={0.0001}
+              value={displayedInterestRate}
+              onChange={e => setInterestRate(Number(e.target.value))}
+            />
+          </div>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <label>Term</label>
+            <input
+              type="number"
+              min={1}
+              value={displayedTerm}
+              onChange={e => setTerm(Number(e.target.value))}
+            />
+          </div>
+        </form>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <h1>Monthly Payment: ${displayedMonthlyLoanPayment}</h1>
+        </div>
+      </div>
     </div>
   )
 }
