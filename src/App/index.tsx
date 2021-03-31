@@ -72,7 +72,7 @@ const App = () => {
           name: `Year ${Math.floor(paymentNumber / 12) + 1}: ${
             months[paymentNumber % 12]
           }`,
-          Principle: roundToTwoDecimals(payment.principle),
+          Principal: roundToTwoDecimals(payment.principle),
           Interest: roundToTwoDecimals(payment.interest),
         }
       }),
@@ -134,7 +134,7 @@ const App = () => {
         <Tooltip />
         <Legend />
         <Bar dataKey="Interest" fill="#8884d8" />
-        <Bar dataKey="Principle" fill="#82ca9d" />
+        <Bar dataKey="Principal" fill="#82ca9d" />
       </BarChart>
       <div style={{ display: "flex", justifyContent: "center" }}>
         <h1>Lifetime Interest: {displayedLifetimeInterest}</h1>
