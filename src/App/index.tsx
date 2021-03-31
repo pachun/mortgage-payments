@@ -49,9 +49,13 @@ const App = () => {
   )
 
   const initialInterestPaid = 0
-  const lifetimeInterest = loansPayments.reduce(
-    (summedInterest, payment) => summedInterest + payment.interest,
-    initialInterestPaid,
+  const lifetimeInterest = React.useMemo(
+    () =>
+      loansPayments.reduce(
+        (summedInterest, payment) => summedInterest + payment.interest,
+        initialInterestPaid,
+      ),
+    [loansPayments],
   )
 
   const displayedAmount = amount === 0 ? "" : amount
@@ -61,15 +65,19 @@ const App = () => {
     ? loansMonthlyPayment
     : 0
   ).toFixed(2)
-  const displayedPaymentData = loansPayments.map((payment, paymentNumber) => {
-    return {
-      name: `Year ${Math.floor(paymentNumber / 12) + 1}: ${
-        months[paymentNumber % 12]
-      }`,
-      Principle: roundToTwoDecimals(payment.principle),
-      Interest: roundToTwoDecimals(payment.interest),
-    }
-  })
+  const displayedPaymentData = React.useMemo(
+    () =>
+      loansPayments.map((payment, paymentNumber) => {
+        return {
+          name: `Year ${Math.floor(paymentNumber / 12) + 1}: ${
+            months[paymentNumber % 12]
+          }`,
+          Principle: roundToTwoDecimals(payment.principle),
+          Interest: roundToTwoDecimals(payment.interest),
+        }
+      }),
+    [loansPayments],
+  )
   const displayedLifetimeInterest = usdCurrency.format(lifetimeInterest)
 
   return (
