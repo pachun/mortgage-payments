@@ -61,10 +61,9 @@ const App = () => {
   const displayedAmount = amount === 0 ? "" : amount
   const displayedInterestRate = interestRate ? interestRate : "0.0"
   const displayedTerm = term === 0 ? "" : term
-  const displayedMonthlyLoanPayment = (loansMonthlyPayment
-    ? loansMonthlyPayment
-    : 0
-  ).toFixed(2)
+  const displayedMonthlyLoanPayment = loansMonthlyPayment
+    ? usdCurrency.format(loansMonthlyPayment)
+    : usdCurrency.format(0)
   const displayedPaymentData = React.useMemo(
     () =>
       loansPayments.map((payment, paymentNumber) => {
@@ -124,7 +123,7 @@ const App = () => {
           </div>
         </form>
         <div style={{ display: "flex", justifyContent: "center" }}>
-          <h1>Monthly Payment: ${displayedMonthlyLoanPayment}</h1>
+          <h1>Monthly Payment: {displayedMonthlyLoanPayment}</h1>
         </div>
       </div>
       <BarChart width={730} height={250} data={displayedPaymentData}>
