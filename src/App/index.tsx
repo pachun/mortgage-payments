@@ -1,6 +1,38 @@
 import React from "react"
+import {
+  BarChart,
+  Bar,
+  Legend,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+} from "recharts"
+
 import monthlyPayment from "./monthlyPayment"
 import payments from "./payments"
+
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+]
+
+const roundToTwoDecimals = (num: number) => Math.round(num * 100) / 100
+
+const usdCurrency = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+})
 
 const App = () => {
   const [amount, setAmount] = React.useState(265_240)
@@ -11,6 +43,17 @@ const App = () => {
     [amount, interestRate, term],
   )
 
+  const loansPayments = React.useMemo(
+    () => (loansMonthlyPayment ? payments({ amount, interestRate, term }) : []),
+    [amount, interestRate, term, loansMonthlyPayment],
+  )
+
+  const initialInterestPaid = 0
+  const lifetimeInterest = loansPayments.reduce(
+    (summedInterest, payment) => summedInterest + payment.interest,
+    initialInterestPaid,
+  )
+
   const displayedAmount = amount === 0 ? "" : amount
   const displayedInterestRate = interestRate ? interestRate : "0.0"
   const displayedTerm = term === 0 ? "" : term
@@ -18,31 +61,26 @@ const App = () => {
     ? loansMonthlyPayment
     : 0
   ).toFixed(2)
-
-  const loansPayments = React.useMemo(
-    () => (loansMonthlyPayment ? payments({ amount, interestRate, term }) : []),
-    [amount, interestRate, term, loansMonthlyPayment],
-  )
-  console.log(loansPayments)
-  console.log(
-    `total principle = ${loansPayments.reduce(
-      (summedPrinciple: number, currentPayment: Payment) => {
-        return summedPrinciple + currentPayment.principle
-      },
-      0,
-    )}`,
-  )
-  console.log(
-    `total interest = ${loansPayments.reduce(
-      (summedInterest: number, currentPayment: Payment) => {
-        return summedInterest + currentPayment.interest
-      },
-      0,
-    )}`,
-  )
+  const displayedPaymentData = loansPayments.map((payment, paymentNumber) => {
+    return {
+      name: `Year ${Math.floor(paymentNumber / 12) + 1}: ${
+        months[paymentNumber % 12]
+      }`,
+      Principle: roundToTwoDecimals(payment.principle),
+      Interest: roundToTwoDecimals(payment.interest),
+    }
+  })
+  const displayedLifetimeInterest = usdCurrency.format(lifetimeInterest)
 
   return (
-    <div style={{ display: "flex", justifyContent: "center", marginTop: 100 }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        marginTop: 100,
+      }}
+    >
       <div style={{ width: 500 }}>
         <div style={{ display: "flex", justifyContent: "center" }}>
           <h4>Amortized Loan Calculator</h4>
@@ -80,6 +118,18 @@ const App = () => {
         <div style={{ display: "flex", justifyContent: "center" }}>
           <h1>Monthly Payment: ${displayedMonthlyLoanPayment}</h1>
         </div>
+      </div>
+      <BarChart width={730} height={250} data={displayedPaymentData}>
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="name" />
+        <YAxis />
+        <Tooltip />
+        <Legend />
+        <Bar dataKey="Interest" fill="#8884d8" />
+        <Bar dataKey="Principle" fill="#82ca9d" />
+      </BarChart>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <h1>Lifetime Interest: {displayedLifetimeInterest}</h1>
       </div>
     </div>
   )
