@@ -61,9 +61,10 @@ const App = () => {
   const displayedAmount = amount === 0 ? "" : amount
   const displayedInterestRate = interestRate ? interestRate : "0.0"
   const displayedTerm = term === 0 ? "" : term
-  const displayedMonthlyLoanPayment = loansMonthlyPayment
-    ? usdCurrency.format(loansMonthlyPayment)
-    : usdCurrency.format(0)
+  const displayedMonthlyLoanPayment =
+    loansMonthlyPayment && loansMonthlyPayment !== Infinity
+      ? usdCurrency.format(loansMonthlyPayment)
+      : usdCurrency.format(0)
   const displayedPaymentData = React.useMemo(
     () =>
       loansPayments.map((payment, paymentNumber) => {
@@ -77,7 +78,9 @@ const App = () => {
       }),
     [loansPayments],
   )
-  const displayedLifetimeInterest = usdCurrency.format(lifetimeInterest)
+  const displayedLifetimeInterest = lifetimeInterest
+    ? usdCurrency.format(lifetimeInterest)
+    : usdCurrency.format(0)
 
   return (
     <div
