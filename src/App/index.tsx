@@ -1,9 +1,10 @@
 import React from "react"
 import monthlyPayment from "./monthlyPayment"
+import payments from "./payments"
 
 const App = () => {
   const [amount, setAmount] = React.useState(265_240)
-  const [interestRate, setInterestRate] = React.useState(0.05)
+  const [interestRate, setInterestRate] = React.useState(0.03625)
   const [term, setTerm] = React.useState(30)
   const loansMonthlyPayment = React.useMemo(
     () => monthlyPayment({ amount, interestRate, term }),
@@ -17,6 +18,28 @@ const App = () => {
     ? loansMonthlyPayment
     : 0
   ).toFixed(2)
+
+  const loansPayments = React.useMemo(
+    () => (loansMonthlyPayment ? payments({ amount, interestRate, term }) : []),
+    [amount, interestRate, term, loansMonthlyPayment],
+  )
+  console.log(loansPayments)
+  console.log(
+    `total principle = ${loansPayments.reduce(
+      (summedPrinciple: number, currentPayment: Payment) => {
+        return summedPrinciple + currentPayment.principle
+      },
+      0,
+    )}`,
+  )
+  console.log(
+    `total interest = ${loansPayments.reduce(
+      (summedInterest: number, currentPayment: Payment) => {
+        return summedInterest + currentPayment.interest
+      },
+      0,
+    )}`,
+  )
 
   return (
     <div style={{ display: "flex", justifyContent: "center", marginTop: 100 }}>
