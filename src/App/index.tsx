@@ -38,14 +38,34 @@ const App = () => {
   const [amount, setAmount] = React.useState(265_240)
   const [interestRate, setInterestRate] = React.useState(0.03625)
   const [term, setTerm] = React.useState(30)
-  const loansMonthlyPayment = React.useMemo(
-    () => monthlyPayment({ amount, interestRate, term }),
-    [amount, interestRate, term],
+
+  const [propertyTaxes, setPropertyTaxes] = React.useState(0)
+  const [homeownersInsurance, setHomeownersInsurance] = React.useState(0)
+  const [mortgageInsurance, setMortgageInsurance] = React.useState(0)
+
+  const loan = React.useMemo(
+    () => ({
+      amount,
+      interestRate,
+      term,
+      propertyTaxes,
+      homeownersInsurance,
+      mortgageInsurance,
+    }),
+    [
+      amount,
+      interestRate,
+      term,
+      propertyTaxes,
+      homeownersInsurance,
+      mortgageInsurance,
+    ],
   )
 
+  const loansMonthlyPayment = React.useMemo(() => monthlyPayment(loan), [loan])
   const loansPayments = React.useMemo(
-    () => (loansMonthlyPayment ? payments({ amount, interestRate, term }) : []),
-    [amount, interestRate, term, loansMonthlyPayment],
+    () => (loansMonthlyPayment ? payments(loan) : []),
+    [loan, loansMonthlyPayment],
   )
 
   const initialInterestPaid = 0
@@ -61,9 +81,19 @@ const App = () => {
   const displayedAmount = amount === 0 ? "" : amount
   const displayedInterestRate = interestRate ? interestRate : "0.0"
   const displayedTerm = term === 0 ? "" : term
+  const displayedPropertyTaxes = propertyTaxes === 0 ? "" : propertyTaxes
+  const displayedHomeownersInsurance =
+    homeownersInsurance === 0 ? "" : homeownersInsurance
+  const displayedMortgageInsurance =
+    mortgageInsurance === 0 ? "" : mortgageInsurance
   const displayedMonthlyLoanPayment =
     loansMonthlyPayment && loansMonthlyPayment !== Infinity
-      ? usdCurrency.format(loansMonthlyPayment)
+      ? usdCurrency.format(
+          loansMonthlyPayment +
+            propertyTaxes +
+            homeownersInsurance +
+            mortgageInsurance,
+        )
       : usdCurrency.format(0)
   const displayedPaymentData = React.useMemo(
     () =>
@@ -74,6 +104,7 @@ const App = () => {
           }`,
           Principal: roundToTwoDecimals(payment.principle),
           Interest: roundToTwoDecimals(payment.interest),
+          PropertyTaxes: roundToTwoDecimals(payment.propertyTaxes),
         }
       }),
     [loansPayments],
@@ -122,6 +153,33 @@ const App = () => {
               min={1}
               value={displayedTerm}
               onChange={e => setTerm(Number(e.target.value))}
+            />
+          </div>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <label style={{ color: "#777" }}>Property Taxes</label>
+            <input
+              type="number"
+              min={0}
+              value={displayedPropertyTaxes}
+              onChange={e => setPropertyTaxes(Number(e.target.value))}
+            />
+          </div>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <label style={{ color: "#777" }}>Homeowner's Insurance</label>
+            <input
+              type="number"
+              min={0}
+              value={displayedHomeownersInsurance}
+              onChange={e => setHomeownersInsurance(Number(e.target.value))}
+            />
+          </div>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <label style={{ color: "#777" }}>Mortgage Insurance</label>
+            <input
+              type="number"
+              min={0}
+              value={displayedMortgageInsurance}
+              onChange={e => setMortgageInsurance(Number(e.target.value))}
             />
           </div>
         </form>
