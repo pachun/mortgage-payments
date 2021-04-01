@@ -24,19 +24,11 @@ const App = () => {
         marginTop: 100,
       }}
     >
-      <div style={{ width: 500 }}>
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <h4>Amortized Loan Calculator</h4>
-        </div>
-        <LoanForm loan={loan} setLoan={setLoan} />
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <MonthlyPayment loan={loan} />
-        </div>
-      </div>
+      <h4>Amortized Loan Calculator</h4>
+      <LoanForm loan={loan} setLoan={setLoan} />
+      <MonthlyPayment loan={loan} />
       <PrincipalAndInterestChart loan={loan} />
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <LifetimeInterest loan={loan} />
-      </div>
+      <LifetimeInterest loan={loan} />
     </div>
   )
 }
