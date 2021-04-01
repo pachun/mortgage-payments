@@ -1,4 +1,4 @@
-import payments from "./payments"
+import loansPayments from "./loansPayments"
 
 const roundToTwoDecimals = (num: number) => Math.round(num * 100) / 100
 
@@ -10,9 +10,12 @@ test("the interest payments are in decreasing order", () => {
     amount,
     interestRate,
     term,
+    propertyTaxes: 0,
+    mortgageInsurance: 0,
+    homeownersInsurance: 0,
   }
 
-  const actualPaymentOrder = payments(loan)
+  const actualPaymentOrder = loansPayments(loan)
 
   const byDescendingInterestPaymentAmounts = (
     payment1: Payment,
@@ -36,9 +39,12 @@ test("the principal payments are in increasing order", () => {
     amount,
     interestRate,
     term,
+    propertyTaxes: 0,
+    mortgageInsurance: 0,
+    homeownersInsurance: 0,
   }
 
-  const actualPaymentOrder = payments(loan)
+  const actualPaymentOrder = loansPayments(loan)
 
   const byAscendingPrinciplePaymentAmounts = (
     payment1: Payment,
@@ -62,12 +68,15 @@ test("the principal payments sum to the total principal owed", () => {
     amount,
     interestRate,
     term,
+    propertyTaxes: 0,
+    mortgageInsurance: 0,
+    homeownersInsurance: 0,
   }
 
-  const loansPayments = payments(loan)
+  const payments = loansPayments(loan)
 
   const initialPrinciplePaid = 0
-  const actualPrinciplePaid = loansPayments.reduce(
+  const actualPrinciplePaid = payments.reduce(
     (summedPrinciple: number, payment: Payment) =>
       summedPrinciple + payment.principal,
     initialPrinciplePaid,

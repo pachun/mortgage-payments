@@ -1,4 +1,4 @@
-import monthlyPayment from "./monthlyPayment"
+import loansMonthlyPayment from "./loansMonthlyPayment"
 
 const MONTHS_PER_YEAR = 12
 
@@ -17,12 +17,12 @@ const interestForNextPayment = (loan: Loan, previousPayments: Payment[]) => {
 }
 
 const payments = (loan: Loan): Payment[] => {
-  const loansMonthlyPayment = monthlyPayment(loan)
+  const monthlyPayment = loansMonthlyPayment(loan)
   const { propertyTaxes, homeownersInsurance, mortgageInsurance } = loan
   const paymentRange = [...Array(MONTHS_PER_YEAR * loan.term)]
   const toIndividualPayments = (previousPayments: Payment[]): Payment[] => {
     const interest = interestForNextPayment(loan, previousPayments)
-    const principal = loansMonthlyPayment - interest
+    const principal = monthlyPayment - interest
 
     return [
       ...previousPayments,
