@@ -1,5 +1,5 @@
 interface Payment {
-  principle: number
+  principal: number
   interest: number
 
   propertyTaxes: number

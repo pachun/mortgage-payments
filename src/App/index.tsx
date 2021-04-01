@@ -102,7 +102,7 @@ const App = () => {
           name: `Year ${Math.floor(paymentNumber / 12) + 1}: ${
             months[paymentNumber % 12]
           }`,
-          Principal: roundToTwoDecimals(payment.principle),
+          Principal: roundToTwoDecimals(payment.principal),
           Interest: roundToTwoDecimals(payment.interest),
           PropertyTaxes: roundToTwoDecimals(payment.propertyTaxes),
         }

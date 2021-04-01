@@ -7,7 +7,7 @@ const interestForNextPayment = (loan: Loan, previousPayments: Payment[]) => {
   const currentLoanBalance =
     loan.amount -
     previousPayments.reduce(
-      (summedPrinciple, payment) => summedPrinciple + payment.principle,
+      (summedPrinciple, payment) => summedPrinciple + payment.principal,
       originalPrinciplePaid,
     )
 
@@ -22,13 +22,13 @@ const payments = (loan: Loan): Payment[] => {
   const paymentRange = [...Array(MONTHS_PER_YEAR * loan.term)]
   const toIndividualPayments = (previousPayments: Payment[]): Payment[] => {
     const interest = interestForNextPayment(loan, previousPayments)
-    const principle = loansMonthlyPayment - interest
+    const principal = loansMonthlyPayment - interest
 
     return [
       ...previousPayments,
       {
         interest,
-        principle,
+        principal,
         propertyTaxes,
         homeownersInsurance,
         mortgageInsurance,

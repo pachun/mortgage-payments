@@ -28,7 +28,7 @@ test("the interest payments are in decreasing order", () => {
   expect(actualPaymentOrder).toEqual(expectedPaymentOrder)
 })
 
-test("the principle payments are in increasing order", () => {
+test("the principal payments are in increasing order", () => {
   const amount = 265_240
   const interestRate = 0.03625
   const term = 30
@@ -44,7 +44,7 @@ test("the principle payments are in increasing order", () => {
     payment1: Payment,
     payment2: Payment,
   ) => {
-    return payment1.principle < payment2.principle ? 1 : -1
+    return payment1.principal < payment2.principal ? 1 : -1
   }
 
   const expectedPaymentOrder = actualPaymentOrder.sort(
@@ -54,7 +54,7 @@ test("the principle payments are in increasing order", () => {
   expect(actualPaymentOrder).toEqual(expectedPaymentOrder)
 })
 
-test("the principle payments sum to the total principle owed", () => {
+test("the principal payments sum to the total principal owed", () => {
   const amount = 265_240
   const interestRate = 0.03625
   const term = 30
@@ -69,14 +69,14 @@ test("the principle payments sum to the total principle owed", () => {
   const initialPrinciplePaid = 0
   const actualPrinciplePaid = loansPayments.reduce(
     (summedPrinciple: number, payment: Payment) =>
-      summedPrinciple + payment.principle,
+      summedPrinciple + payment.principal,
     initialPrinciplePaid,
   )
 
   // we're about 30 cents off in the given example / assertion.
   //
-  // (the actual principle paid is 265,239.70 and
-  //    the true principle owed is 265,240.00)
+  // (the actual principal paid is 265,239.70 and
+  //    the true principal owed is 265,240.00)
   //
   // I'm pretty sure the calculator logic is
   // working correctly, given it works so closely
